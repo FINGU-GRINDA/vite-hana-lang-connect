@@ -19,11 +19,15 @@ function AppContent() {
   });
 
   useEffect(() => {
-    // 한국어가 아닌 경우에만 번역 적용
+    // 먼저 한국어로 복원
+    removeTranslation(appRef.current as Element);
+    
+    // 한국어가 아닌 경우 번역 적용
     if (targetLanguage !== 'ko') {
-      applyTranslation(appRef.current as Element);
-    } else {
-      removeTranslation(appRef.current as Element);
+      // 약간의 딜레이를 두고 번역 적용 (DOM 복원 후)
+      setTimeout(() => {
+        applyTranslation(appRef.current as Element);
+      }, 100);
     }
   }, [applyTranslation, removeTranslation, targetLanguage]);
 
