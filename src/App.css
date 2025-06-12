@@ -40,3 +40,32 @@
 .read-the-docs {
   color: #888;
 }
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-color);
+}
+
+.main-content {
+  flex: 1;
+  padding-bottom: 80px; /* 하단 네비게이션 공간 확보 */
+  overflow-y: auto;
+}
+
+/* 스크롤바 숨기기 (Webkit) */
+.main-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* 스크롤바 숨기기 (Firefox) */
+.main-content {
+  scrollbar-width: none;
+}
+
+@media (max-width: 428px) {
+  .main-content {
+    padding-bottom: 70px;
+  }
+}
