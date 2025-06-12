@@ -10,7 +10,6 @@ import { useAppSelector } from "./store/hooks";
 import { useAutoTranslation } from "./hooks/useAutoTranslation";
 
 function AppContent() {
-  const isTranslationEnabled = useAppSelector((state) => state.translation.isTranslationEnabled);
   const targetLanguage = useAppSelector((state) => state.translation.targetLanguage);
   const appRef = useRef<HTMLDivElement>(null);
   
@@ -20,12 +19,13 @@ function AppContent() {
   });
 
   useEffect(() => {
-    if (isTranslationEnabled) {
+    // 한국어가 아닌 경우에만 번역 적용
+    if (targetLanguage !== 'ko') {
       applyTranslation(appRef.current as Element);
     } else {
       removeTranslation(appRef.current as Element);
     }
-  }, [applyTranslation, isTranslationEnabled, removeTranslation, targetLanguage]);
+  }, [applyTranslation, removeTranslation, targetLanguage]);
 
   return (
     <div ref={appRef} className="min-h-screen bg-gray-50 relative">

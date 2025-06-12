@@ -1,15 +1,13 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface TranslationState {
-  isTranslationEnabled: boolean;
   targetLanguage: string;
   translationCache: { [key: string]: string };
   isLoading: boolean;
 }
 
 const initialState: TranslationState = {
-  isTranslationEnabled: false,
-  targetLanguage: 'en',
+  targetLanguage: 'ko', // 기본값을 한국어로 설정 (번역하지 않음)
   translationCache: {},
   isLoading: false,
 };
@@ -18,12 +16,6 @@ const translationSlice = createSlice({
   name: 'translation',
   initialState,
   reducers: {
-    toggleTranslation: (state) => {
-      state.isTranslationEnabled = !state.isTranslationEnabled;
-    },
-    setTranslation: (state, action: PayloadAction<boolean>) => {
-      state.isTranslationEnabled = action.payload;
-    },
     setTargetLanguage: (state, action: PayloadAction<string>) => {
       state.targetLanguage = action.payload;
     },
@@ -40,8 +32,6 @@ const translationSlice = createSlice({
 });
 
 export const { 
-  toggleTranslation, 
-  setTranslation, 
   setTargetLanguage, 
   addToCache, 
   clearCache, 

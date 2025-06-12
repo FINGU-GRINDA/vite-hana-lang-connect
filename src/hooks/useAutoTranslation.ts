@@ -9,7 +9,7 @@ interface AutoTranslationOptions {
 }
 
 export const useAutoTranslation = (options: AutoTranslationOptions = {}) => {
-  const isTranslationEnabled = useAppSelector((state) => state.translation.isTranslationEnabled);
+  const targetLanguage = useAppSelector((state) => state.translation.targetLanguage);
   const observer = useRef<MutationObserver | null>(null);
   const originalTexts = useRef<Map<Node, string>>(new Map());
   
@@ -124,7 +124,8 @@ export const useAutoTranslation = (options: AutoTranslationOptions = {}) => {
 
   // MutationObserver 콜백
   const handleMutations = useCallback(async (mutations: MutationRecord[]) => {
-    if (!isTranslationEnabled) return;
+    // 한국어가 아닌 경우에만 번역 적용
+    if (targetLanguage === 'ko') return;
 
     for (const mutation of mutations) {
       if (mutation.type === 'childList') {
@@ -135,13 +136,13 @@ export const useAutoTranslation = (options: AutoTranslationOptions = {}) => {
         });
       }
     }
-  }, [isTranslationEnabled, applyTranslation]);
+  }, [targetLanguage, applyTranslation]);
 
   // 번역 시작/중지
   useEffect(() => {
     const element = targetElement || document.body;
     
-    if (isTranslationEnabled) {
+    if (targetLanguage !== 'ko') {
       // 초기 번역 적용
       applyTranslation(element);
       
@@ -166,10 +167,9 @@ export const useAutoTranslation = (options: AutoTranslationOptions = {}) => {
         observer.current.disconnect();
       }
     };
-  }, [isTranslationEnabled, targetElement, applyTranslation, removeTranslation, handleMutations]);
+  }, [targetLanguage, targetElement, applyTranslation, removeTranslation, handleMutations]);
 
   return {
-    isTranslationEnabled,
     applyTranslation,
     removeTranslation,
     clearCache: translationService.clearCache.bind(translationService)
