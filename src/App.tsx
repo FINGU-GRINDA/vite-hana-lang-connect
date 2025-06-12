@@ -5,21 +5,47 @@ import ProductRecommendation from "./components/ProductRecommendation";
 import QuickMenu from "./components/QuickMenu";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { useRef, useEffect } from "react";
+import { useAppSelector } from "./store/hooks";
+import { useAutoTranslation } from "./hooks/useAutoTranslation";
+
+function AppContent() {
+  const isTranslationEnabled = useAppSelector((state) => state.translation.isTranslationEnabled);
+  const targetLanguage = useAppSelector((state) => state.translation.targetLanguage);
+  const appRef = useRef<HTMLDivElement>(null);
+  
+  // 전체 앱에 자동 번역 적용
+  const { applyTranslation, removeTranslation } = useAutoTranslation({
+    targetElement: appRef.current || undefined
+  });
+
+  useEffect(() => {
+    if (isTranslationEnabled) {
+      applyTranslation(appRef.current as Element);
+    } else {
+      removeTranslation(appRef.current as Element);
+    }
+  }, [applyTranslation, isTranslationEnabled, removeTranslation, targetLanguage]);
+
+  return (
+    <div ref={appRef} className="min-h-screen bg-gray-50 relative">
+      <Header />
+      
+      <main className="pb-20 min-h-screen">
+        <AccountCard />
+        <QuickMenu />
+        <ProductRecommendation />
+      </main>
+      
+      <BottomNavigation />
+    </div>
+  );
+}
 
 function App() {
   return (
     <Provider store={store}>
-      <div className="min-h-screen bg-gray-50 relative">
-        <Header />
-        
-        <main className="pb-20 min-h-screen">
-          <AccountCard />
-          <QuickMenu />
-          <ProductRecommendation />
-        </main>
-        
-        <BottomNavigation />
-      </div>
+      <AppContent />
     </Provider>
   );
 }

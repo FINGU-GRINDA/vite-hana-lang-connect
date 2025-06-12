@@ -6,7 +6,7 @@ const BottomNavigation: React.FC = () => {
   const navigationItems = [
     {
       id: 'home',
-      name: '홈',
+      name: '메인',
       icon: (active: boolean) => (
         <svg className={`w-6 h-6 ${active ? 'text-emerald-500' : 'text-gray-400'}`} 
              fill={active ? 'currentColor' : 'none'} 
