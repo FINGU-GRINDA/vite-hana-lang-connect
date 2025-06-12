@@ -1,8 +1,15 @@
 import React from 'react';
 
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { toggleTranslation } from '../store/slices/translationSlice';
+
 const Header: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const isTranslationEnabled = useAppSelector((state) => state.translation.isTranslationEnabled);
+  
   const handleTranslateClick = () => {
-    alert('번역 기능이 실행됩니다!');
+    dispatch(toggleTranslation());
+    alert(`번역 기능이 ${isTranslationEnabled ? '비활성화' : '활성화'}되었습니다!`);
   };
 
   return (
