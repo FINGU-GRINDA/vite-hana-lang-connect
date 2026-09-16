@@ -18,9 +18,9 @@ function AppContent() {
   const appRef = useRef<HTMLDivElement>(null);
   
   // 전체 앱에 자동 번역 적용
-  const { applyTranslation, removeTranslation } = useAutoTranslation({
-    targetElement: appRef.current || undefined
-  });
+  // targetElement 를 넘기지 않는다 — 렌더 중 ref 를 읽으면 첫 렌더에서는 항상
+  // null 이라 어차피 document.body 로 폴백됐고, react-hooks/refs 위반이다
+  const { applyTranslation, removeTranslation } = useAutoTranslation();
 
   useEffect(() => {
     const handleTranslation = async () => {
