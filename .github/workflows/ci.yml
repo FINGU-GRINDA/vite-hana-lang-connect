@@ -1,0 +1,22 @@
+# 이 저장소에는 워크플로가 하나도 없어서 조직 필수 워크플로(Supply-Chain Scan)가
+# 디스패치되지 않았고, 그 결과 모든 PR 이 룰셋에 막혀 머지 불가 상태였다.
+# 빌드 검증을 겸하는 최소 CI 를 둔다.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [alpha]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
